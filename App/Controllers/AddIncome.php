@@ -10,7 +10,7 @@ use \Core\View;
  * PHP version 7.0
  */
 //class Items extends \Core\Controller
-class Items extends Authenticated
+class AddIncome extends Authenticated
 {
 
     /**
@@ -30,9 +30,9 @@ class Items extends Authenticated
      *
      * @return void
      */
-    public function indexAction()
+    public function showAction()
     {
-        View::renderTemplate('Items/index.html');
+        View::renderTemplate('AddIncome/show.html');
     }
 
     /**
@@ -45,13 +45,4 @@ class Items extends Authenticated
         echo "new action";
     }
 
-    /**
-     * Show an item
-     *
-     * @return void
-     */
-    public function showAction()
-    {
-        echo "show action";
-    }
 }

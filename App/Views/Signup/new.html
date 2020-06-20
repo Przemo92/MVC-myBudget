@@ -24,13 +24,37 @@
                         required: true,
                         minlength: 6,
                         validPassword: true
+                    },
+                    password_confirm: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#inputPassword"
                     }
+
                 },
                 messages: {
+                    name: "Proszę podać nazwę użytkownika",
                     email: {
-                        remote: 'email already taken'
+                        required: "Proszę podać email",
+                        email: "Podany email jest niepoprawny",
+                        remote: "Podany email jest już w użyciu"
+                    },
+                    password: {
+                        required: "Proszę podać hasło",
+                        minlength: "Hasło musi zawierać 6 znaków lub więcej",
+                        validPassword: "Hasło musi zawierać przynajmniej jedną literę i jedną cyfrę"
+                    },
+                    password_confirm: {
+                    required: "Proszę potwierdzić hasło",
+                    minlength: "Hasło musi zawierać 6 znaków lub więcej",
+                    equalTo: "Podane hasła nie są idnetyczne"
                     }
-                }
+                },
+                errorPlacement: function (error, element) {
+                var name = $(element).attr("name");
+                error.appendTo($("#" + name + "_validate"));
+            },
+
             });
 
 
@@ -48,34 +72,73 @@
 
 {% block body %}
 
-    <h1>Sign up</h1>
+<main>
 
-    {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+		<section class="budget">
 
-    <form method="post" action="/signup/create" id="formSignup">
+			<div class="container">
 
-        <div class="form-group">
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control" />
-        </div>
+				<div class="row">
 
-        <button type="submit" class="btn btn-default">Sign up</button>
+					<div class="offset-lg-4 col-lg-4 text-center mt-3 p-3 mb-2">
 
-    </form>
+						<h2 style="font-size: 26px;"><b>Rejestracja</b></h2>
 
+            {% if user.errors is not empty %}
+                <p>Errors:</p>
+                <ul>
+                    {% for error in user.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+						<form method="post" action="/signup/create" id="formSignup">
+
+							<div class="input-group mb-1 mt-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1"><i class="icon-user"></i></span>
+								</div>
+									<input name="name" class="form-control" placeholder="Nazwa użytkownika" autofocus value="{{ user.name }}" required class="form-control">
+							</div>
+              <div id="name_validate"></div>
+
+							<div class="input-group mb-1">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-mail-alt"></i></span>
+								</div>
+									<input name="email" class="form-control" placeholder="Adres e-mail" value="{{ user.email }}" required type="email" class="form-control">
+							</div>
+              <div id="email_validate"></div>
+
+							<div class="input-group mb-1">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-lock"></i></span>
+								</div>
+									<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Hasło" aria-label="Hasło">
+							</div>
+              <div id="password_validate"></div>
+
+							<div class="input-group mb-1">
+
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-lock"></i></span>
+								</div>
+									<input type="password" name="password_confirm" id="inputPassword" class="form-control" placeholder="Powtórz hasło" aria-label="Powtórz hasło" aria-describedby="basic-addon1">
+							</div>
+              <div id="password_confirm_validate"></div>
+
+							<button class="btn btn-primary btn-lg btn-block mt-2" type="submit"><i class="icon-right-bold"></i>Zarejestruj się</button>
+
+						</form>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</section>
+
+	</main>
 {% endblock %}

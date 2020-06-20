@@ -20,19 +20,19 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'przemy10_mvc-mybudget';
+    const DB_NAME = 'mvc-budget';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'przemy10_kapela';
+    const DB_USER = 'root';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'przemekkapela11';
+    const DB_PASSWORD = '';
 
     /**
      * Show or hide error messages on screen
@@ -42,7 +42,7 @@ class Config
 
     const SECRET_KEY = 'B3FA81524658816F61B1C822E94B1';
 
-    const SECRET_MAIL_GRID ='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';
+    const SECRET_MAIL_GRID ='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';
 
 
 }

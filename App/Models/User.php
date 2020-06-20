@@ -79,30 +79,30 @@ class User extends \Core\Model
     {
         // Name
         if ($this->name == '') {
-            $this->errors[] = 'Name is required';
+            $this->errors[] = 'Proszę podać nazwę użytkownika';
         }
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors[] = 'Invalid email';
+            $this->errors[] = 'Podany email jest niepoprawny';
         }
         if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors[] = 'email already taken';
+            $this->errors[] = 'Podany email jest już w użyciu';
         }
 
         // Password
         if (isset($this->password)) {
 
             if (strlen($this->password) < 6) {
-                $this->errors[] = 'Please enter at least 6 characters for the password';
+                $this->errors[] = 'Hasło musi zawierać 6 znaków lub więcej';
             }
 
             if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one letter';
+                $this->errors[] = 'Hasło musi zawierać przynajmniej jedną literę';
             }
 
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one number';
+                $this->errors[] = 'Hasło musi zawierać przynajmniej jedną cyfrę';
             }
 
         }
@@ -314,7 +314,7 @@ class User extends \Core\Model
         $user = $stmt->fetch();
 
         if ($user) {
-            
+
             // Check password reset token hasn't expired
             if (strtotime($user->password_reset_expires_at) > time()) {
 
@@ -349,10 +349,10 @@ class User extends \Core\Model
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
-                                                  
+
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-                                          
+
             return $stmt->execute();
         }
 
@@ -398,7 +398,7 @@ class User extends \Core\Model
 
         $stmt->execute();
     }
-    
+
     /**
      * Update the user's profile
      *
@@ -452,4 +452,92 @@ class User extends \Core\Model
 
         return false;
     }
+    public function saveIncomesDefault()
+    {
+
+        $user = static::findByEmail($this->email);
+
+        $result = static::selectIncomesDefault();
+
+        $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:id, :name)';
+
+        foreach ($result as $row)
+        {
+          $name = $row['name'];
+          static::insertData($sql, $name, $user->id);
+        }
+    }
+    public function savePaymentMethodsDefault()
+    {
+
+        $user = static::findByEmail($this->email);
+
+        $result = static::selectPaymentMethodsDefault();
+
+        $sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name) VALUES (:id, :name)';
+
+        foreach ($result as $row)
+        {
+          $name = $row['name'];
+          static::insertData($sql, $name, $user->id);
+        }
+    }
+    public function saveExpensesDefault()
+    {
+
+        $user = static::findByEmail($this->email);
+
+        $result = static::selectExpensesDefault();
+
+        $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:id, :name)';
+
+        foreach ($result as $row)
+        {
+          $name = $row['name'];
+          static::insertData($sql, $name, $user->id);
+        }
+    }
+  public function selectIncomesDefault()
+    {
+      $sql = "SELECT name
+              FROM incomes_category_default";
+
+              $db = static::getDB();
+              $stmt = $db->prepare($sql);
+              $stmt->execute();
+
+              return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function selectPaymentMethodsDefault()
+      {
+        $sql = "SELECT name
+                FROM payment_methods_default";
+
+                $db = static::getDB();
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+      public function selectExpensesDefault()
+        {
+          $sql = "SELECT name
+                  FROM expenses_category_default";
+
+                  $db = static::getDB();
+                  $stmt = $db->prepare($sql);
+                  $stmt->execute();
+
+                  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+      public function insertData($sql, $name, $id)
+      {
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+      }
+
 }

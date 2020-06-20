@@ -4,12 +4,98 @@
 
 {% block body %}
 
-    <h1>Welcome</h1>
-
     {% if current_user %}
-        Hello {{ current_user.name }}.
+    <main>
+
+		<section class="budget">
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-12 text-justify mt-3 p-3 mb-2">
+						<header>
+							<h2 style="margin-bottom: 30px"class="mb-4"><b>Witaj drogi użytkowniku {{ current_user.name }}! Co bedziemy robić?</b></h2>
+
+							<img class="img-thumbnail float-right ml-3 mr-5 mt-0 mb-2" style="width: 400px;" src="img/kid2.jpg" alt="pig">
+
+							<h2 style="margin-bottom: 20px;">Ponizej krótka instrukcja obsługi aplikacji.</h2>
+						</header>
+
+
+						<p>"Strona główna" - przekierowanie na stronę główną z instrukcją obsługi.</p>
+
+						<p>"Dodaj przychód" - wprowadzenie danych dla przychodu (kwota, data, kategoria przychodu oraz opcjonalnie komentarz).</p>
+
+						<p>"Dodaj wydatkek" - wprowadzenie danych dla wydatku (kwota, data, rodzaj płatności, kategoria wydatku oraz opcjonalnie komentarz)</p>
+
+						<p>"Przeglądaj bilans" - Przegląd przychodów i wydatków (automatycznie dla bieżącego miesiąca), bilans twoich finansów (ile zaoszczędziłeś danego miesiąca). Przy każdym przychodzie i wydatku umieszczono opcję usuwania oraz edycji.</p>
+
+						<p>"Ustawienia" - edycja konta użytkownika.</p>
+
+						<p>"Wyloguj" - wylogowanie użytkownika, przekierowanie na strone do logowania witryny.</p>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</section>
+
+	</main>
     {% else %}
-        <a href="/signup/new">Sign up</a> or <a href="/login">log in</a>.
+    <main>
+
+      <section class="budget">
+
+        <div class="container">
+
+          <div class="row">
+
+            <div class="offset-lg-2 col-lg-8 text-center mt-3 p-3 mb-2">
+
+              <h2>Czujesz się niestabilny finansowo?</h2>
+              <h2>Zbierasz pieniądze na swoje marzenia?</h2>
+              <h2>Dążysz do uczucia bezpieczeństwa finansowego?</h2>
+
+              <h2>Jeśli odpowiedź brzmi <b>TAK</b> na przynajmniej jedno z powyższych pytań, to jest to aplikacja dla Ciebie!!!</h2>
+
+            </div>
+            <div class=" offset-lg-2 col-lg-4 pt-3 mr-1" >
+
+              <figure>
+                <img src="img/roslina.jpg" alt="plant">
+              </figure>
+
+            </div>
+
+            <div class=" col-lg-4 p-2 ml-1">
+
+              <h2>Korzystanie z aplikacji jest bardzo proste:</h2>
+              <ol>
+                <li>Zakładasz konto</li>
+                <li>Wpisujesz swoje przychody i wydatki</li>
+                <li>Korzystasz z przejrzystych bilansow i wykresów</li>
+                <li>Otrzymujesz wiedzę o swoich finansach zupełnie za <b>darmo</b></li>
+              </ol>
+
+            </div>
+            <div class="offset-lg-2 col-lg-4 p-2 mt-2 mr-1">
+              <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='signup/new';"><i class="icon-right-bold"></i>Zarejestruj się</button>
+            </div>
+
+            <div class="col-lg-4 p-2 mt-2 ml-1">
+              <button class="btn btn-success btn-lg btn-block" type="button" onClick="location.href='login/new';"><i class="icon-login"></i>Zaloguj się</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      </main>
     {% endif %}
 
 {% endblock %}

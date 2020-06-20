@@ -1,18 +1,103 @@
-body {
-    margin-top: 3em;
+body
+{
+	background-color: #FBFBFB;
+	color: #efefef;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
 }
-/*
-.alert {
-    border: 1px solid #ccc;
-    padding: 6px;
+.nav-item:hover
+{
+	background-color: #FBFBFB;
 }
+.navbar
+{
+	background-color: #E4E5E5;
+	border-bottom: 2px solid #cccccc;
+	border-top: 2px solid #cccccc;
+}
+}
+.budget
+{
+	background-color: ##404040;
+
+}
+.container
+{
+	color: black;
+}
+.start
+{
+	background-color: ##404040;
+	border: 2px solid #cccccc;
+}
+.balance
+{
+	background-color: ##404040;
+	border: 2px solid #cccccc;
+	round: 5ps;
+	float: left;
+}
+.row img
+{
+	width: 100%;
+	height: auto;
+}
+h1
+{
+	color: #C0D06F;
+	margin: 20px 5px 20px 10px;
+	display: inline-block;
+	font-weight: 800;
+}
+h2
+{
+	font-size: 20px;
+}
+h3
+{
+	font-size: 15px;
+	text-align: center;
+}
+.blockquote
+{
+	font-size: 16px;
+}
+.blockquote-footer
+{
+	margin-right:520px;
+	color: #C0D06F;
+}
+.information
+{
+  font-size: 17px;
+  color: black;
+}
+@media (max-width: 820px)
+{
+	.stopa
+	{
+		margin-right:0px;
+		text-align: center;
+
+	}
+}
+label.error {
+   float: none; color: red;
+   padding-left: .5em;
+   vertical-align: top;
+   display: block;
+}​
 .alert-info {
-    background-color: #d9edf7;
+    text-align: center;
 }
 .alert-success {
-    background-color: #dff0d8;
+    text-align: center;
 }
 .alert-warning {
-    background-color: #fcf8e3;
+    text-align: center;
 }
-*/
+
+.active
+{
+  background-color: white;
+}
