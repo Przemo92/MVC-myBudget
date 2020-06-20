@@ -31,10 +31,13 @@ class Signup extends \Core\Controller
     public function createAction()
     {
         $user = new User($_POST);
-
         if ($user->save()) {
 
             $user->sendActivationEmail();
+
+            $user->saveIncomesDefault();
+            $user->saveExpensesDefault();
+            $user->savePaymentMethodsDefault();
 
             $this->redirect('/signup/success');
 

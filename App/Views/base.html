@@ -1,31 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>{% block title %}MyBudget{% endblock %}</title>
+    <meta name="description" content="Tutaj w łatwy sposób zapanujesz nad swoim domowym budżetem!">
+	  <meta name="keywords" content="finanse, budżet, pieniądze, jak zapanować, oblicz, wydatki, przychody, bilans, policz swoje finanse, miesięczne zestwienie, kontrola budżetu">
+	  <meta name="author" content="Przemysław Kapela">
+  	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/fontello.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
 </head>
 <body>
+  <header class="col-12 text-center bg-dark pb-2">
 
-	<div class="container">
+<a href="/">
+					<i class="icon-dollar"></i>
+					<h1>MyBudget</h1>
+					<i class="icon-dollar"></i>
+				</a>
 
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user %}
-                        <li><a href="/profile/show">Profile</a></li>
-                        <li><a href="/logout">Log out</a></li>                                
-                    {% endif %}
-                </ul>
-            </div>
-        </nav>
+			<blockquote class="blockquote">
+
+					<p class="mb-1">To nie pieniądze dają szczęście, ale to, co dzięki nim możesz zrobić ze swoim życiem.</p>
+
+					<p class="stopa blockquote-footer text-center">Lois P. Frankel</p>
+
+			</blockquote>
+
+	</header>
+  {% if current_user %}
+  <nav class="navbar navbar-expand-xl navbar-light">
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="offset-lg-3 col-lg-8 offset-lg-3 collapse navbar-collapse" id="navbarNav">
+
+				<ul class="navbar-nav">
+
+					<li class="nav-item">
+						<a class="nav-link" href="/"><i class="icon-home"></i>Strona główna</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/addIncome/show"><i class="icon-money"></i>Dodaj przychód</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="addExpenceWeb.php"><i class="icon-basket"></i>Dodaj wydatek</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="balance.php"><i class="icon-chart-bar"></i>Przeglądaj bilans</a>
+					</li>
+
+					 <li class="nav-item">
+						<a class="nav-link" href="/profile/show"><i class="icon-cog"></i>Ustawienia</a>
+					</li>
+
+					 <li class="nav-item ">
+						<a class="nav-link" href="/logout"><i class="icon-off"></i>Wyloguj</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+  {% endif %}
 
         {% for message in flash_messages %}
-            <div class="alert alert-{{ message.type }}">
+            <div class="alert alert-{{ message.type }}" style="text-align: center">
                 {{ message.body }}
             </div>
         {% endfor %}
@@ -35,8 +78,10 @@
 
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+
+
 
     {% block footer %}
     {% endblock %}

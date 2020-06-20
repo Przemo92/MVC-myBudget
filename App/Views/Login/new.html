@@ -3,28 +3,52 @@
 {% block title %}Log in{% endblock %}
 
 {% block body %}
+    <main>
 
-    <h1>Log in</h1>
+		<section class="budget">
 
-    <form action="/login/create" method="post">
+			<div class="container">
 
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" autofocus value="{{ email }}" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" class="form-control" />
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Remember me
-            </label>
-        </div>
+				<div class="row">
 
-        <button type="submit" class="btn btn-default">Log in</button>
-        <a href="/password/forgot">Forgot password?</a>
+					<div class="offset-lg-4 col-lg-4 text-center mt-3 p-3 mb-2">
 
-    </form>
+						<h2 style="font-size: 26px;"><b>Logowanie</b></h2>
+
+						<form action="/login/create" method="post">
+
+							<div class="input-group mb-3 mt-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1"><i class="icon-mail-alt"></i></span>
+								</div>
+									<input type="email" id="inputEmail" name="email" class="form-control" placeholder="Adres email" aria-label="Adres email" autofocus value="{{ email }}">
+							</div>
+
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-lock"></i></span>
+								</div>
+									<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Hasło" aria-label="Hasło">
+							</div>
+
+              <div class="checkbox">
+                  <label>
+                      <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Zapamiętaj mnie
+                  </label>
+              </div>
+              <a href="/password/forgot">Zapomniałeś hasła?</a>
+
+							<button class="btn btn-success btn-lg btn-block mt-3" type="submit"><i class="icon-login"></i>Zaloguj się</button>
+						</form>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</section>
+
+	</main>
 
 {% endblock %}
