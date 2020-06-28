@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Add income{% endblock %}
+{% block title %}Add expense{% endblock %}
 
 {% block footer %}
   <script src="/js/memory.js"></script>
@@ -8,9 +8,9 @@
 
 <script>
   $(document).ready(function(){
-  $("#incomeCategory").select2({
+  $("#expenseCategory").select2({
              ajax: {
-               url: "/AddIncome/chooseIncome",
+               url: "/AddExpense/chooseExpense",
                type: "post",
                dataType: 'json',
                delay: 250,
@@ -27,22 +27,26 @@
                cache: true
               }
              });
-   $('#incomeForm').validate({
+   $('#expenseForm').validate({
      rules: {
-       money: 'required',
+       expenseMoney: 'required',
        datePicker: 'required',
-       incomeCategory: {
+       expenseCategory: {
+         min: 1
+       },
+       paymentMethod: {
          min: 1
        }
      },
      messages:{
-       money: {
+       expenseMoney: {
            required: 'Proszę podać kwotę',
            number: "Proszę podać poprawną liczbę",
            step: "Podaj kwotę do dwóch miejsc po przecinku"
        },
        datePicker: 'Proszę zaznacz datę',
-       incomeCategory: 'Proszę wybrać kategorię'
+       expenseCategory: 'Proszę wybrać kategorię',
+       paymentMethod: 'Proszę wybrać rodzaj płatności'
      },
      errorPlacement: function (error, element) {
      var name = $(element).attr("name");
@@ -51,6 +55,27 @@
    });
 
   });
+  $(document).ready(function(){
+  $("#paymentMethod").select2({
+             ajax: {
+               url: "/AddExpense/choosePaymentMethod",
+               type: "post",
+               dataType: 'json',
+               delay: 250,
+               data: function (params) {
+                return {
+                  searchTerm: params.term // search term
+                };
+               },
+               processResults: function (response) {
+                 return {
+                    results: response
+                 };
+               },
+               cache: true
+              }
+             });
+           });
   </script>
 {% endblock %}
 
@@ -61,15 +86,15 @@
 			<div class="container">
 				<div class="row">
 					<div class="offset-lg-4 col-lg-4 text-center mt-3 p-3 mb-2">
-						<h2><b>Wprowadź dane przychodu:</b></h2>
-						<form method="post" action="/AddIncome/new" id="incomeForm">
+						<h2><b>Wprowadź dane wydatku:</b></h2>
+						<form method="post" action="/AddExpense/new" id="expenseForm">
 							<div class="input-group mb-2 mt-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text" id="basic-addon1"><i class="icon-money-1"></i></span>
 								</div>
-									<input type="number" name="money" id="money" class="form-control" step="0.01" placeholder="Kwota" aria-label="Kwota" aria-describedby="basic-addon1">
+									<input type="number" name="expenseMoney" id="expenseMoney" class="form-control" step="0.01" placeholder="Kwota" aria-label="Kwota" aria-describedby="basic-addon1">
 							</div>
-              <div id="money_validate"></div>
+              <div id="expenseMoney_validate"></div>
 
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
@@ -79,18 +104,25 @@
 							</div>
               <div id="datePicker_validate"></div>
 
-							<div class="input-group mb-2">
-									<select id="incomeCategory" name="incomeCategory" class="form-control">
-										<option value="0" selected>--Wybierz rodzaj przychodu--</option>
+              <div class="input-group mb-2">
+									<select id="paymentMethod" name="paymentMethod" class="form-control">
+										<option value="0" selected>--Wybierz rodzaj płatności--</option>
 									</select>
 							</div>
-              <div id="incomeCategory_validate"></div>
+              <div id="paymentMethod_validate"></div>
+
+							<div class="input-group mb-2">
+									<select id="expenseCategory" name="expenseCategory" class="form-control">
+										<option value="0" selected>--Wybierz rodzaj wydatku--</option>
+									</select>
+							</div>
+              <div id="expenseCategory_validate"></div>
 
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="icon-pencil-alt"></i></span>
 								</div>
-									<input type="text" name="comment" id="comment" class="form-control" placeholder="Komentarz" aria-label="Komantarz" aria-describedby="basic-addon1">
+									<input type="text" name="expenseComment" id="expenseComment" class="form-control" placeholder="Komentarz" aria-label="Komantarz" aria-describedby="basic-addon1">
 							</div>
 							<div class="col-lg-5 p-0" style="float: left; margin-left: 0px;">
 								<button class="btn btn-success btn-lg btn-block" type="submit">Dodaj</button>

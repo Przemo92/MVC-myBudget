@@ -539,5 +539,4 @@ class User extends \Core\Model
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->execute();
       }
-
 }

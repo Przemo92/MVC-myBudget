@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
-use \App\Models\Income;
+use \App\Models\Expense;
 use \App\Flash;
 /**
  * Items controller (example)
@@ -11,7 +11,7 @@ use \App\Flash;
  * PHP version 7.0
  */
 //class Items extends \Core\Controller
-class AddIncome extends \Core\Controller
+class AddExpense extends \Core\Controller
 {
 
     /**
@@ -40,17 +40,22 @@ class AddIncome extends \Core\Controller
      }
     public function showAction()
     {
-        View::renderTemplate('AddIncome/show.html');
+        View::renderTemplate('AddExpense/show.html');
     }
     /**
-     * choose a category income
+     * choose a category expense
      *
      * @return void
      */
-    public function chooseIncomeAction()
+    public function chooseExpenseAction()
     {
         $searchTerm = $_POST['searchTerm'] ?? '';
-        Income::getDataIncome($searchTerm);
+        Expense::getDataExpense($searchTerm);
+    }
+    public function choosePaymentMethodAction()
+    {
+        $searchTerm = $_POST['searchTerm'] ?? '';
+        Expense::getDataPayment($searchTerm);
     }
     /**
      * Add a new item
@@ -59,17 +64,17 @@ class AddIncome extends \Core\Controller
      */
     public function newAction()
     {
-        $income = new Income($_POST);
+        $expense = new Expense($_POST);
 
-        if($income->addNewIncome())
+        if($expense->addNewExpense())
         {
-          Flash::addMessage('Przychód dodano');
-          $this->redirect('/AddIncome/show');
+          Flash::addMessage('Dodano wydatek');
+          $this->redirect('/AddExpense/show');
         }
         else
           {
-            Flash::addMessage('Próba dodania przychodu nieudana.');
-            $this->redirect('/AddIncome/show');
+            Flash::addMessage('Próba dodania wydatku nieudana.');
+            $this->redirect('/AddExpense/show');
           }
         }
     }
