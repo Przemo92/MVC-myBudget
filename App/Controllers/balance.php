@@ -61,4 +61,10 @@ class Balance extends \Core\Controller
         $date2 = $_POST['date2'];
         BalanceModel::getChartData($date1, $date2);
     }
+    public function showIESumAction()
+    {
+      $date1 = $_POST['date1'];
+      $date2 = $_POST['date2'];
+      BalanceModel::getIESum($date1, $date2);
+    }
     }

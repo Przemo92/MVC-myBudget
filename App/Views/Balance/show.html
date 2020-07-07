@@ -96,6 +96,15 @@
        $('#showExpenses').html(data);
      }
  });
+ $.ajax({
+ url: "/balance/showIESum",
+ method: "POST",
+ data: {date1:date1, date2:date2}, //js:php
+   success:function(data)
+   {
+     $('#Sum').html(data);
+   }
+});
    }
 
    function drawChart(date1, date2) {
@@ -195,24 +204,24 @@
 					</div>
 					<!-- Modal /\-->
 
-					<div class="balance   col-lg-6 text-center mt-3 mb-2">
+					<div class="balance   col-lg-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb">
 					<h2>PRZYCHODY</h2>
           <div id="showIncomes"></div>
 
 					</div>
 
-					<div class="balance  col-lg-6 text-center mt-3  mb-2">
+					<div class="balance  col-lg-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6"">
 					<h2>WYDATKI</h2>
           <div id="showExpenses"></div>
 					</div>
 
-					<div class="balance   col-lg-12 text-center mt-3 mb-2">
+					<div class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff"">
 					<h2>BILANS</h2>
 					Przychody - Wydatki = Dochód
-
+          <div id="Sum"></div>
 					</div>
 
-					<div id="donutchart" style=" height: 500px;" class="col-lg-12 mt-3 mb-2"></div>
+					<div id="donutchart" style=" height: 500px;" class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000;"></div>
 
 				</div>
 

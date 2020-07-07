@@ -145,7 +145,51 @@ class BalanceModel extends \Core\Model
     }
     echo json_encode($data);
   }
+static public function getIESum($date1, $date2)
+{
+  $expenseSum = 0;
+  $incomeSum = 0;
+  $user = Auth::getUser();
+  if ($date2 == 0)
+  {
+    $sql = " SELECT *
+            FROM expenses
+            WHERE user_id = '$user->id'AND date_of_expense LIKE '$date1%'";
+    $sql2 =" SELECT *
+            FROM incomes
+            WHERE user_id = '$user->id'AND date_of_income LIKE '$date1%'";
+  }
+  else
+  {
+    $sql = " SELECT *
+            FROM expenses
+            WHERE user_id = '$user->id'AND date_of_expense BETWEEN '$date1' AND '$date2'";
+    $sql2 =" SELECT *
+            FROM incomes
+            WHERE user_id = '$user->id'AND date_of_income BETWEEN '$date1' AND '$date2'";
+  }
+  $fetchData = static::getDataSelect($sql);
+  foreach ($fetchData as $row2)
+  {
+    $expenseSum += $row2['amount'];
 
+  }
+  $fetchData2 = static::getDataSelect($sql2);
+  foreach ($fetchData2 as $row3)
+  {
+    $incomeSum += $row3['amount'];
+  }
+  $balance = $incomeSum - $expenseSum;
+  echo $incomeSum." - ".$expenseSum." = ".$balance;
+  if($balance < 0)
+  {
+    echo "<div> Twój bilans finansowy jest ujemny, uważaj, popadasz w długi!</div>";
+  }
+  else {
+    echo "<div> Gratulacje! Twój bilans finansowy jest dodatni! Zaoszczędziłeś $balance.</div>";
+  }
+
+}
  static public function getDataSelect($sql)
  {
    $db = static::getDB();
