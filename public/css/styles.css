@@ -32,10 +32,12 @@ body
 }
 .balance
 {
-	background-color: ##404040;
-	border: 2px solid #cccccc;
-	round: 5ps;
-	float: left;
+width: 115px;
+padding: 10px;
+border: 2px solid #000;
+border-radius: 30px;
+-moz-border-radius: 15px;
+float: left;
 }
 .row img
 {

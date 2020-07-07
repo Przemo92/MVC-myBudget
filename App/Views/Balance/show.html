@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}Balance{% endblock %}
+
+{% block footer %}
+<script src="/js/memory.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+
+  var today = new Date();
+  var year = today.getFullYear();
+
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  $(document).ready(function(){
+    var month = today.getMonth()+1;
+    if(month<10)
+    {
+      month="0"+month;
+    }
+    var date1 = year+"-"+month;
+    var date2 = "0";
+    document.getElementById("buttonDate").innerHTML = $('#current_Month').val();
+    drawChart(date1, date2);
+    ajaxIE(date1, date2);
+ });
+
+      $(document).ready(function(){
+     	$("#current_Month").click(function(){
+     		var month = today.getMonth()+1;
+     		if(month<10)
+     		{
+     		  month="0"+month;
+     		}
+     		var date1 = year+"-"+month;
+        var date2 = 0;
+        document.getElementById("buttonDate").innerHTML = $('#current_Month').val();
+        drawChart(date1, date2);
+     		ajaxIE(date1, date2);
+     	});
+     });
+
+     $(document).ready(function(){
+     $("#prevoius_Month").click(function(){
+       var month = today.getMonth();
+       if(month<10)
+       {
+         month="0"+month;
+       }
+       var date1 = year+"-"+month;
+       var date2 = 0;
+       document.getElementById("buttonDate").innerHTML = $('#prevoius_Month').val();
+       drawChart(date1, date2);
+       ajaxIE(date1, date2);
+     });
+    });
+
+    $(document).ready(function(){
+    $("#current_Year").click(function(){
+      var date1 = year;
+      var date2 = 0;
+      document.getElementById("buttonDate").innerHTML = $('#current_Year').val();
+      drawChart(date1, date2);
+      ajaxIE(date1, date2);
+    });
+   });
+
+   $(document).ready(function(){
+   $("#uncommonDate").click(function(){
+     var date1 = $('#datePicker').val();
+		 var date2 = $('#datePicker2').val();
+     document.getElementById("buttonDate").innerHTML = $('#uncommon_Text_Date').val();
+     drawChart(date1, date2);
+     ajaxIE(date1, date2);
+   });
+  });
+
+   function ajaxIE(date1, date2)
+   {
+     $.ajax({
+     url: "/balance/showIncomes",
+     method: "POST",
+     data: {date1:date1, date2:date2}, //js:php
+       success:function(data)
+       {
+         $('#showIncomes').html(data);
+       }
+   });
+   $.ajax({
+   url: "/balance/showExpenses",
+   method: "POST",
+   data: {date1:date1, date2:date2}, //js:php
+     success:function(data)
+     {
+       $('#showExpenses').html(data);
+     }
+ });
+ $.ajax({
+ url: "/balance/showIESum",
+ method: "POST",
+ data: {date1:date1, date2:date2}, //js:php
+   success:function(data)
+   {
+     $('#Sum').html(data);
+   }
+});
+   }
+
+   function drawChart(date1, date2) {
+    $.ajax({
+    url: "/balance/showChart",
+    dataType:"json",
+    method: "POST",
+    data: {date1:date1, date2:date2}, //js:php
+
+      success:function(results)
+      {
+        var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'name');
+         data2.addColumn('number',   'expense_sum');
+
+         results.forEach(function(packet) {
+               data2.addRow([
+                   (packet.name),
+                   parseFloat(packet.expense_sum),
+                 ]);
+             });
+             var options = {
+              title: 'Wydatki w wybranym okresie czasowym',
+              pieHole: 0.4,
+            };
+          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+
+          chart.draw(data2, options);
+        }
+      });
+   }
+  </script>
+{% endblock %}
+
+{% block body %}
+	<main>
+		<section class="budget">
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="input-group offset-xl-9 col-xl-3 mt-4" >
+						<div class="dropdown">
+							 <button class="btn btn-secondary dropdown-toggle" type="button" id="buttonDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Bieżący miesiąc
+							 </button>
+
+							 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+								<button class="dropdown-item" name="current_Month" id="current_Month" value="Bieżący miesiąc" type="button">Bieżący miesiąc</button>
+								<button class="dropdown-item" name="prevoius_Month" id="prevoius_Month" value="Poprzedni miesiąc" type="button">Poprzedni miesiąc</button>
+								<button class="dropdown-item" name="current_Year" id="current_Year" value="Bieżący rok" type="button">Bieżący rok</button>
+
+								<button class="dropdown-item" type="button" id="uncommon_Text_Date" value="Niestandardowy" data-toggle="modal" data-target="#exampleModalCenter">Niestandardowy</button>
+							 </div>
+						</div>
+					</div>
+
+					<!-- Modal \/-->
+					<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+						  <div class="modal-header" style="display:block">
+							<button type="button" class="close" style="float: right;" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+							<h3 class="modal-title" style="text-align: center">Zakres dat do bilansu</h3>
+						  </div>
+						 <h3 style="font-size: 20px; text-align: center;" class="mt-3 mb-0">Podaj datę początkową</h3>
+						<form>
+							 <div class="modal-body">
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="icon-calendar"></i></span>
+									</div>
+										<input type="date" class="form-control" id="datePicker" name="datePicker" aria-label="Data" aria-describedby="basic-addon1">
+								</div>
+								<h3 style="font-size: 20px; text-align: center;" class="mt-3 mb-3">Podaj datę końcową</h3>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="icon-calendar"></i></span>
+									</div>
+										<input type="date" class="form-control" id="datePicker2" name="datePicker2" aria-label="Data" aria-describedby="basic-addon1">
+								</div>
+							 </div>
+						  <div class="modal-footer"style="display: block;">
+						  <div class="col-lg-5 p-0 mb-3" style="float: left; margin-left: 0px;">
+								<button class="btn btn-success btn-lg btn-block" name="uncommonDate" id="uncommonDate" type="submit" data-dismiss="modal" style="font-size: 15px;">Wybierz zakres dat</button>
+							</div>
+							<div class="col-lg-5 p-0 mb-3" style="float: right;">
+								<button class="btn btn-danger btn-lg btn-block" type="button" data-dismiss="modal" style="font-size: 15px;">Zamknij</button>
+							</div>
+						  </div>
+						</form>
+						</div>
+					  </div>
+					</div>
+					<!-- Modal /\-->
+
+					<div class="balance   col-lg-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb">
+					<h2>PRZYCHODY</h2>
+          <div id="showIncomes"></div>
+
+					</div>
+
+					<div class="balance  col-lg-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6"">
+					<h2>WYDATKI</h2>
+          <div id="showExpenses"></div>
+					</div>
+
+					<div class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff"">
+					<h2>BILANS</h2>
+					Przychody - Wydatki = Dochód
+          <div id="Sum"></div>
+					</div>
+
+					<div id="donutchart" style=" height: 500px;" class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000;"></div>
+
+				</div>
+
+			</div>
+
+		</section>
+
+	</main>
+{% endblock %}
