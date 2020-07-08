@@ -11,7 +11,7 @@
   var year = today.getFullYear();
 
   google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
+  google.charts.setOnLoadCallback();
 
   $(document).ready(function(){
     var month = today.getMonth()+1;
@@ -22,7 +22,7 @@
     var date1 = year+"-"+month;
     var date2 = "0";
     document.getElementById("buttonDate").innerHTML = $('#current_Month').val();
-    drawChart(date1, date2);
+
     ajaxIE(date1, date2);
  });
 
@@ -36,7 +36,7 @@
      		var date1 = year+"-"+month;
         var date2 = 0;
         document.getElementById("buttonDate").innerHTML = $('#current_Month').val();
-        drawChart(date1, date2);
+
      		ajaxIE(date1, date2);
      	});
      });
@@ -51,7 +51,7 @@
        var date1 = year+"-"+month;
        var date2 = 0;
        document.getElementById("buttonDate").innerHTML = $('#prevoius_Month').val();
-       drawChart(date1, date2);
+
        ajaxIE(date1, date2);
      });
     });
@@ -61,7 +61,7 @@
       var date1 = year;
       var date2 = 0;
       document.getElementById("buttonDate").innerHTML = $('#current_Year').val();
-      drawChart(date1, date2);
+
       ajaxIE(date1, date2);
     });
    });
@@ -71,7 +71,7 @@
      var date1 = $('#datePicker').val();
 		 var date2 = $('#datePicker2').val();
      document.getElementById("buttonDate").innerHTML = $('#uncommon_Text_Date').val();
-     drawChart(date1, date2);
+
      ajaxIE(date1, date2);
    });
   });
@@ -105,37 +105,35 @@
      $('#Sum').html(data);
    }
 });
+$.ajax({
+url: "/balance/showChart",
+dataType:"json",
+method: "POST",
+data: {date1:date1, date2:date2}, //js:php
+
+  success:function(results)
+  {
+    var data2 = new google.visualization.DataTable();
+    data2.addColumn('string', 'name');
+     data2.addColumn('number',   'expense_sum');
+
+     results.forEach(function(packet) {
+           data2.addRow([
+               (packet.name),
+               parseFloat(packet.expense_sum),
+             ]);
+         });
+         var options = {
+          title: 'Wydatki w wybranym okresie czasowym',
+          pieHole: 0.4,
+        };
+      var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+
+      chart.draw(data2, options);
+    }
+  });
    }
 
-   function drawChart(date1, date2) {
-    $.ajax({
-    url: "/balance/showChart",
-    dataType:"json",
-    method: "POST",
-    data: {date1:date1, date2:date2}, //js:php
-
-      success:function(results)
-      {
-        var data2 = new google.visualization.DataTable();
-        data2.addColumn('string', 'name');
-         data2.addColumn('number',   'expense_sum');
-
-         results.forEach(function(packet) {
-               data2.addRow([
-                   (packet.name),
-                   parseFloat(packet.expense_sum),
-                 ]);
-             });
-             var options = {
-              title: 'Wydatki w wybranym okresie czasowym',
-              pieHole: 0.4,
-            };
-          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-
-          chart.draw(data2, options);
-        }
-      });
-   }
   </script>
 {% endblock %}
 
@@ -204,24 +202,28 @@
 					</div>
 					<!-- Modal /\-->
 
-					<div class="balance   col-lg-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb">
+					<div class="col-lg-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb; border-radius: 30px;
+          -moz-border-radius: 15px;">
 					<h2>PRZYCHODY</h2>
           <div id="showIncomes"></div>
 
 					</div>
 
-					<div class="balance  col-lg-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6"">
+					<div class="col-lg-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6; border-radius: 30px;
+          -moz-border-radius: 15px;"">
 					<h2>WYDATKI</h2>
           <div id="showExpenses"></div>
 					</div>
 
-					<div class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff"">
+					<div class="col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff; border-radius: 30px;
+          -moz-border-radius: 15px;"">
 					<h2>BILANS</h2>
 					Przychody - Wydatki = Dochód
           <div id="Sum"></div>
 					</div>
 
-					<div id="donutchart" style=" height: 500px;" class="balance   col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000;"></div>
+					<div id="donutchart" class="col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000; border-radius: 30px;
+          -moz-border-radius: 15px; height: 400px;"></div>
 
 				</div>
 

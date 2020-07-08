@@ -32,12 +32,10 @@ body
 }
 .balance
 {
-width: 115px;
-padding: 10px;
-border: 2px solid #000;
-border-radius: 30px;
--moz-border-radius: 15px;
-float: left;
+
+
+
+
 }
 .row img
 {
