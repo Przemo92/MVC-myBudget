@@ -10,8 +10,8 @@
   var today = new Date();
   var year = today.getFullYear();
 
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback();
+
+
 
   $(document).ready(function(){
     var month = today.getMonth()+1;
@@ -105,33 +105,49 @@
      $('#Sum').html(data);
    }
 });
+
 $.ajax({
-url: "/balance/showChart",
-dataType:"json",
-method: "POST",
-data: {date1:date1, date2:date2}, //js:php
-
-  success:function(results)
+url: 'https://www.google.com/jsapi?callback',
+cache: true,
+dataType: 'script',
+success: function(){
+google.load('visualization', '1', {packages:['corechart'], 'callback' : function()
   {
-    var data2 = new google.visualization.DataTable();
-    data2.addColumn('string', 'name');
-     data2.addColumn('number',   'expense_sum');
+    $.ajax({
+    url: "/balance/showChart",
+    dataType:"json",
+    method: "POST",
+    data: {date1:date1, date2:date2}, //js:php
 
-     results.forEach(function(packet) {
-           data2.addRow([
-               (packet.name),
-               parseFloat(packet.expense_sum),
-             ]);
-         });
-         var options = {
-          title: 'Wydatki w wybranym okresie czasowym',
-          pieHole: 0.4,
-        };
-      var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+      success:function(results)
+      {
+        var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'name');
+         data2.addColumn('number',   'expense_sum');
 
-      chart.draw(data2, options);
-    }
-  });
+         results.forEach(function(packet) {
+               data2.addRow([
+                   (packet.name),
+                   parseFloat(packet.expense_sum),
+                 ]);
+             });
+
+            var options = {
+                        title: 'Wydatki w wybranym okresie czasowym',
+                        chartArea: { left: 0, width: '100%' },
+                        legend: { position: 'right', alignment: 'start', textStyle: { fontSize: 18 } },
+                        pieHole: 0.3,
+                    };
+          var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+
+          chart.draw(data2, options);
+        }
+      });
+  }
+ });
+ return true;
+}
+});
    }
 
   </script>

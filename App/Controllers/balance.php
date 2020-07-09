@@ -40,7 +40,7 @@ class Balance extends \Core\Controller
      }
     public function showAction()
     {
-        View::renderTemplate('balance/show.html');
+        View::renderTemplate('Balance/show.html');
     }
     public function showIncomesAction()
     {
