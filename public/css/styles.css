@@ -90,8 +90,16 @@ label.error {
 .alert-warning {
     text-align: center;
 }
-
 .active
 {
   background-color: white;
+}
+.edit-settings
+{
+	border: 1px solid #bfbfbf;
+	padding-left: 5px;
+	padding-top: 7px;
+	padding-bottom: 10px;
+	border-radius: 10px;
+  -moz-border-radius: 15px;
 }

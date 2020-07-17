@@ -4,15 +4,13 @@
 
 {% block body %}
 <div class="information offset-lg-5 col-lg-2 text-center mt-3 p-3 mb-2">
+  <h2 style="font-size: 25px">Ustawienia</h2>
 
-  <h2 style="font-size: 25px">Profil użytkownika</h2>
-  <dl class="dl-horizontal">
-      <dt>Nazwa użytkownika</dt>
-      <dd>{{ user.name }}</dd>
-      <dt>E-mail</dt>
-      <dd>{{ user.email }}</dd>
-  </dl>
+  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/edit';"><i class="icon-pencil-alt"></i>Uzytkownik</button>
 
-  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/edit';"><i class="icon-pencil-alt"></i>Edytuj</button>
+  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showIncomes'" ><i class="icon-pencil-alt"></i>Kategorie przychodu</button>
+  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showExpenses'"><i class="icon-pencil-alt"></i>Kategorie wydatków</button>
+  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showPayments'"><i class="icon-pencil-alt"></i>Rodzaje płatności</button>
+
 </div>
 {% endblock %}

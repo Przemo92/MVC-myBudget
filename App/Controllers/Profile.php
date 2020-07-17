@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\Settings;
 
 /**
  * Profile controller
@@ -31,6 +32,18 @@ class Profile extends Authenticated
      *
      * @return void
      */
+     /**
+      * Items index
+      *
+      * @return void
+      */
+      public $errors = [];
+      public function __construct($data = [])
+      {
+          foreach ($data as $key => $value) {
+              $this->$key = $value;
+          };
+      }
     public function showAction()
     {
         View::renderTemplate('Profile/show.html', [
@@ -69,6 +82,161 @@ class Profile extends Authenticated
                 'user' => $this->user
             ]);
 
+        }
+    }
+    public function showIncomesAction()
+    {
+      View::renderTemplate('Profile/showIncomes.html');
+    }
+    public function getCategoryIncomesAction()
+    {
+      Settings::getCategoryIncomes();
+    }
+    public function removeCategoryIncomeAction()
+    {
+      if($incomeId = $_POST['idIncome'])
+      {
+        Settings::removeIncome($incomeId);
+        Flash::addMessage('Usunięto kategorię');
+        $this->redirect('/profile/showIncomes');
+      }
+      else
+        {
+          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          $this->redirect('/profile/showIncomes');
+        }
+    }
+    public function addNewIncomeAction()
+    {
+      if($incomeName = $_POST['newIncome'])
+      {
+        Settings::addIncome($incomeName);
+        Flash::addMessage('Dodano nową kategorię');
+        $this->redirect('/profile/showIncomes');
+      }
+      else
+        {
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          $this->redirect('/profile/showIncomes');
+        }
+    }
+    public function editIncomeAction()
+    {
+      if($incomeId = $_POST['idIncome2'])
+      {
+        $incomeNewName = $_POST['editIncome'];
+        Settings::editIncome($incomeNewName, $incomeId);
+        Flash::addMessage('Zedytowano kategorię');
+        $this->redirect('/profile/showIncomes');
+      }
+      else
+        {
+          Flash::addMessage('Próba edycji kategorii nieudana.');
+          $this->redirect('/profile/showIncomes');
+        }
+    }
+
+    public function showPaymentsAction()
+    {
+      View::renderTemplate('Profile/showPayments.html');
+    }
+    public function getCategoryPaymentsAction()
+    {
+      Settings::getCategoryPayments();
+    }
+    public function removeCategoryPaymentAction()
+    {
+      if($paymentId = $_POST['idPayment'])
+      {
+        Settings::removePayment($paymentId);
+        Flash::addMessage('Usunięto kategorię');
+        $this->redirect('/profile/showPayments');
+      }
+      else
+        {
+          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          $this->redirect('/profile/showPayments');
+        }
+    }
+    public function addNewPaymentAction()
+    {
+      if($paymentName = $_POST['newPayment'])
+      {
+        Settings::addPayment($paymentName);
+        Flash::addMessage('Dodano nową kategorię');
+        $this->redirect('/profile/showPayments');
+      }
+      else
+        {
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          $this->redirect('/profile/showPayments');
+        }
+    }
+    public function editPaymentAction()
+    {
+      if($paymentId = $_POST['idPayment2'])
+      {
+        $paymentNewName = $_POST['editPayment'];
+        Settings::editPayment($paymentNewName, $paymentId);
+        Flash::addMessage('Zedytowano kategorię');
+        $this->redirect('/profile/showPayments');
+      }
+      else
+        {
+          Flash::addMessage('Próba edycji kategorii nieudana.');
+          $this->redirect('/profile/showPayments');
+        }
+    }
+
+    public function showExpensesAction()
+    {
+      View::renderTemplate('Profile/showExpenses.html');
+    }
+    public function getCategoryExpensesAction()
+    {
+      Settings::getCategoryExpenses();
+    }
+    public function removeCategoryExpenseAction()
+    {
+      if($expenseId = $_POST['idExpense'])
+      {
+        Settings::removeExpense($expenseId);
+        Flash::addMessage('Usunięto kategorię');
+        $this->redirect('/profile/showExpenses');
+      }
+      else
+        {
+          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          $this->redirect('/profile/showExpenses');
+        }
+    }
+    public function addNewExpenseAction()
+    {
+      if($expenseName = $_POST['newExpense'])
+      {
+        Settings::addExpense($expenseName);
+        Flash::addMessage('Dodano nową kategorię');
+        $this->redirect('/profile/showExpenses');
+      }
+      else
+        {
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          $this->redirect('/profile/showExpenses');
+        }
+    }
+    public function editExpenseAction()
+    {
+      if($expenseId = $_POST['idExpense2'])
+      {
+        $expenseNewName = $_POST['editExpense'];
+        Settings::editExpense($expenseNewName, $expenseId);
+        Flash::addMessage('Zedytowano kategorię');
+        $this->redirect('/profile/showExpenses');
+      }
+      else
+        {
+          Flash::addMessage('Próba edycji kategorii nieudana.');
+          $this->redirect('/profile/showExpenses');
         }
     }
 }

@@ -11,7 +11,7 @@ use \App\Flash;
  * PHP version 7.0
  */
 //class Items extends \Core\Controller
-class AddIncome extends \Core\Controller
+class AddIncome extends Authenticated
 {
 
     /**
