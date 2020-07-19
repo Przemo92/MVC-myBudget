@@ -109,25 +109,26 @@ class Profile extends Authenticated
     }
     public function addNewIncomeAction()
     {
-      if($incomeName = $_POST['newIncome'])
+      $incomeName2 = strtolower($_POST['newIncome']);
+      $incomeName = ucwords($incomeName2);
+      if(Settings::checkCategoryIncomes($incomeName))
       {
-        Settings::addIncome($incomeName);
-        Flash::addMessage('Dodano nową kategorię');
-        $this->redirect('/profile/showIncomes');
-      }
-      else
-        {
-          Flash::addMessage('Próba dodania nowej kategorii nieudana.', Flash::WARNING);
+          Settings::addIncome($incomeName);
+          Flash::addMessage('Dodano nową kategorię');
+          $this->redirect('/profile/showIncomes');
+        }
+        else {
+          Flash::addMessage('Podana kategoria już istnieje. Proszę podać inną', Flash::WARNING);
           $this->redirect('/profile/showIncomes');
         }
     }
     public function editIncomeAction()
     {
       $incomeId = $_POST['idIncome2'];
-      $incomeNewName = $_POST['editIncome'];
+      $incomeNewName2 = strtolower($_POST['editIncome']);
+      $incomeNewName = ucwords($incomeNewName2);
       if($incomeNewName!= "")
       {
-        $incomeNewName = $_POST['editIncome'];
         Settings::editIncome($incomeNewName, $incomeId);
         Flash::addMessage('Zedytowano kategorię');
         $this->redirect('/profile/showIncomes');
@@ -163,7 +164,9 @@ class Profile extends Authenticated
     }
     public function addNewPaymentAction()
     {
-      if($paymentName = $_POST['newPayment'])
+      $paymentName2 = strtolower($_POST['newPayment']);
+      $paymentName = ucwords($paymentName2);
+      if(Settings::checkCategoryPayments($paymentName))
       {
         Settings::addPayment($paymentName);
         Flash::addMessage('Dodano nową kategorię');
@@ -171,17 +174,17 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba dodania nowej kategorii nieudana.', Flash::WARNING);
+          Flash::addMessage('Podana kategoria już istnieje. Proszę podać inną.', Flash::WARNING);
           $this->redirect('/profile/showPayments');
         }
     }
     public function editPaymentAction()
     {
       $paymentId = $_POST['idPayment2'];
-      $paymentNewName = $_POST['editPayment'];
+      $paymentNewName2 = strtolower($_POST['editPayment']);
+      $paymentNewName = ucwords($paymentNewName2);
       if($paymentNewName!= "")
       {
-        $paymentNewName = $_POST['editPayment'];
         Settings::editPayment($paymentNewName, $paymentId);
         Flash::addMessage('Zedytowano kategorię');
         $this->redirect('/profile/showPayments');
@@ -218,7 +221,9 @@ class Profile extends Authenticated
     }
     public function addNewExpenseAction()
     {
-      if($expenseName = $_POST['newExpense'])
+      $expenseName2 = strtolower($_POST['newExpense']);
+      $expenseName = ucwords($expenseName2);
+      if(Settings::checkCategoryExpenses($expenseName))
       {
         $expenseLimit = $_POST['expenseLimit'];
         Settings::addExpense($expenseName, $expenseLimit);
@@ -234,7 +239,8 @@ class Profile extends Authenticated
     public function editExpenseAction()
     {
       $expenseId = $_POST['idExpense2'];
-      $expenseNewName = $_POST['editExpense'];
+      $expenseNewName2 = strtolower($_POST['editExpense']);
+      $expenseNewName = ucwords($expenseNewName2);
       $expenseLimit = $_POST['expenseLimit'];
       if($expenseLimit == "" && $expenseNewName == "")
       {

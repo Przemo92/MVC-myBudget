@@ -489,12 +489,19 @@ class User extends \Core\Model
 
         $result = static::selectExpensesDefault();
 
-        $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:id, :name)';
+        $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name, expenseLimit) VALUES (:id, :name, :expenseLimit)';
 
         foreach ($result as $row)
         {
           $name = $row['name'];
-          static::insertData($sql, $name, $user->id);
+
+          $db = static::getDB();
+          $stmt = $db->prepare($sql);
+
+          $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+          $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+          $stmt->bindValue(':expenseLimit', NULL, PDO::PARAM_STR);
+          $stmt->execute();
         }
     }
   public function selectIncomesDefault()

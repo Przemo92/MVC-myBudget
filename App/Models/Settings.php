@@ -66,6 +66,22 @@ class Settings extends \Core\Model
    $stmt->bindValue(':name', $newIncome, PDO::PARAM_STR);
    $stmt->execute();
  }
+ public static function checkCategoryIncomes($newIncome)
+{
+  $user = Auth::getUser();
+
+  $sql = "SELECT * FROM incomes_category_assigned_to_users WHERE user_id='$user->id'";
+
+$fetchData = static::getDataSelect($sql);
+foreach ($fetchData as $row)
+{
+  if ($newIncome == $row["name"])
+  {
+    return false;
+  }
+}
+  return true;
+}
  public static function editIncome($incomeNewName, $incomeId)
 {
   $sql = 'UPDATE incomes_category_assigned_to_users
@@ -121,6 +137,22 @@ class Settings extends \Core\Model
    $stmt->bindValue(':name', $newPayment, PDO::PARAM_STR);
    $stmt->execute();
  }
+ public static function checkCategoryPayments($paymentName)
+{
+  $user = Auth::getUser();
+
+  $sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id='$user->id'";
+
+$fetchData = static::getDataSelect($sql);
+foreach ($fetchData as $row)
+{
+  if ($paymentName == $row["name"])
+  {
+    return false;
+  }
+}
+  return true;
+}
 public static function editPayment($paymentNewName, $paymentId)
 {
  $sql = 'UPDATE payment_methods_assigned_to_users
@@ -235,16 +267,45 @@ public static function deleteExpensesThisCategory($expenseId)
 public static function addExpense($newExpense, $expenseLimit)
 {
 $user = Auth::getUser();
+if($expenseLimit !="")
+{
+  $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name, expenseLimit) VALUES (:id, :name, :expenseLimit )';
 
-$sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name, expenseLimit) VALUES (:id, :name, :expenseLimit )';
+  $db = static::getDB();
+  $stmt = $db->prepare($sql);
 
-$db = static::getDB();
-$stmt = $db->prepare($sql);
+  $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+  $stmt->bindValue(':name', $newExpense, PDO::PARAM_STR);
+  $stmt->bindValue(':expenseLimit', $expenseLimit, PDO::PARAM_INT);
+  $stmt->execute();
+}
+else {
+  $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name, expenseLimit) VALUES (:id, :name, :expenseLimit )';
 
-$stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
-$stmt->bindValue(':name', $newExpense, PDO::PARAM_STR);
-$stmt->bindValue(':expenseLimit', $expenseLimit, PDO::PARAM_INT);
-$stmt->execute();
+  $db = static::getDB();
+  $stmt = $db->prepare($sql);
+
+  $stmt->bindValue(':id', $user->id, PDO::PARAM_INT);
+  $stmt->bindValue(':name', $newExpense, PDO::PARAM_STR);
+  $stmt->bindValue(':expenseLimit', NULL, PDO::PARAM_INT);
+  $stmt->execute();
+}
+}
+public static function checkCategoryExpenses($expenseName)
+{
+ $user = Auth::getUser();
+
+ $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE user_id='$user->id'";
+
+$fetchData = static::getDataSelect($sql);
+foreach ($fetchData as $row)
+{
+ if ($expenseName == $row["name"])
+ {
+   return false;
+ }
+}
+ return true;
 }
    static public function getDataSelect($sql)
    {
