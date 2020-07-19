@@ -127,7 +127,7 @@ class Profile extends Authenticated
       $incomeId = $_POST['idIncome2'];
       $incomeNewName2 = strtolower($_POST['editIncome']);
       $incomeNewName = ucwords($incomeNewName2);
-      if($incomeNewName!= "")
+      if(Settings::checkCategoryIncomes($incomeNewName))
       {
         Settings::editIncome($incomeNewName, $incomeId);
         Flash::addMessage('Zedytowano kategorię');
@@ -135,7 +135,7 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba edycji kategorii nieudana.', Flash::WARNING);
+          Flash::addMessage('Podana kategoria już istnieje. Proszę podać inną', Flash::WARNING);
           $this->redirect('/profile/showIncomes');
         }
     }
@@ -183,7 +183,7 @@ class Profile extends Authenticated
       $paymentId = $_POST['idPayment2'];
       $paymentNewName2 = strtolower($_POST['editPayment']);
       $paymentNewName = ucwords($paymentNewName2);
-      if($paymentNewName!= "")
+      if(Settings::checkCategoryPayments($paymentNewName))
       {
         Settings::editPayment($paymentNewName, $paymentId);
         Flash::addMessage('Zedytowano kategorię');
@@ -191,7 +191,7 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba edycji kategorii nieudana.', Flash::WARNING);
+          Flash::addMessage('Podana kategoria już istnieje. Proszę podać inną.', Flash::WARNING);
           $this->redirect('/profile/showPayments');
         }
     }
@@ -249,9 +249,17 @@ class Profile extends Authenticated
       }
       else
         {
-          Settings::editExpense($expenseNewName, $expenseId, $expenseLimit);
-          Flash::addMessage('Zedytowano kategorię');
-          $this->redirect('/profile/showExpenses');
+          if(Settings::checkCategoryExpenses($expenseNewName))
+          {
+            Settings::editExpense($expenseNewName, $expenseId, $expenseLimit);
+            Flash::addMessage('Zedytowano kategorię');
+            $this->redirect('/profile/showExpenses');
+          }
+          else
+            {
+              Flash::addMessage('Podana kategoria już istnieje.', Flash::WARNING);
+              $this->redirect('/profile/showExpenses');
+            }
         }
     }
 }
