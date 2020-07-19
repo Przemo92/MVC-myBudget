@@ -259,6 +259,56 @@ google.load('visualization', '1', {packages:['corechart'], 'callback' : function
 					<div id="donutchart" class="col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000; border-radius: 30px;
           -moz-border-radius: 15px; height: 400px;"></div>
 
+          <!-- Modal \/-->
+          <form method="post" action="/balance/removeIncome" id="send1">
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="display:block">
+              <button type="button" class="close" style="float: right;" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h3 class="modal-title" style="text-align: center; font-size: 20px;">Czy na pewno chcesz usunąć dany przychód?</h3>
+              </div>
+              <input type="hidden" id="idIncome" name="idIncome">
+              <div class="modal-footer"style="display: block;">
+                </form>
+              <div class="col-lg-5 p-0 mb-3" style="float: left; margin-left: 0px;">
+                <button class="btn btn-danger btn-lg btn-block" type="submit" id ="delete" form="send1"  style="font-size: 15px;">Tak</button>
+              </div>
+              <div class="col-lg-5 p-0 mb-3" style="float: right;">
+                <button class="btn btn-success btn-lg btn-block" type="button" data-dismiss="modal" style="font-size: 15px;">Nie</button>
+              </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <!-- Modal /\-->
+          !-- Modal \/-->
+          <form method="post" action="/balance/removeExpense" id="send2">
+          <div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="display:block">
+              <button type="button" class="close" style="float: right;" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h3 class="modal-title" style="text-align: center; font-size: 20px;">Czy na pewno chcesz usunąć dany wydatek?</h3>
+              </div>
+              <input type="hidden" id="idExpense" name="idExpense">
+              <div class="modal-footer"style="display: block;">
+                </form>
+              <div class="col-lg-5 p-0 mb-3" style="float: left; margin-left: 0px;">
+                <button class="btn btn-danger btn-lg btn-block" type="submit" id ="delete" form="send2"  style="font-size: 15px;">Tak</button>
+              </div>
+              <div class="col-lg-5 p-0 mb-3" style="float: right;">
+                <button class="btn btn-success btn-lg btn-block" type="button" data-dismiss="modal" style="font-size: 15px;">Nie</button>
+              </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <!-- Modal /\-->
 				</div>
 
 			</div>
