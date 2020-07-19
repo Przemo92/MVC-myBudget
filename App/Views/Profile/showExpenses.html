@@ -46,7 +46,7 @@
     <button type="button" class="close" style="float: right;" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h3 class="modal-title" style="text-align: center; font-size: 20px;">Czy na pewno chcesz usunąć daną kategorię</h3>
+    <h3 class="modal-title" style="text-align: center; font-size: 20px;">Czy na pewno chcesz usunąć daną kategorię oraz wszystkie wydatki przypisane do tej kategorii?</h3>
     </div>
     <input type="hidden" id="idExpense" name="idExpense">
     <div class="modal-footer"style="display: block;">
@@ -77,6 +77,12 @@
      <div class="modal-body">
       <div class="input-group mb-3">
           <input type="text" class="form-control" id="newExpense" name="newExpense">
+      </div>
+     </div>
+     <h3 style="font-size: 20px; text-align: center;" class="mt-3 mb-0">Podaj miesięczny limit dla kategorii. Nie wymagane</h3>
+     <div class="modal-body">
+      <div class="input-group mb-3">
+          <input type="number" name="expenseLimit" id="expenseLimit" class="form-control" step="0.01" placeholder="Limit" aria-label="Kwota" aria-describedby="basic-addon1">
       </div>
      </div>
     <div class="modal-footer"style="display: block;">
@@ -110,6 +116,13 @@
           <input type="hidden" id="idExpense2" name="idExpense2">
       </div>
      </div>
+     <h3 style="font-size: 20px; text-align: center;" class="mt-3 mb-0">Podaj miesięczny limit dla kategorii. Nie wymagane</h3>
+     <div class="modal-body">
+      <div class="input-group mb-3">
+          <input type="number" name="expenseLimit" id="expenseLimit" class="form-control" step="0.01" placeholder="Limit" aria-label="Kwota" aria-describedby="basic-addon1">
+      </div>
+     </div>
+
     <div class="modal-footer"style="display: block;">
     <div class="col-lg-5 p-0 mb-3" style="float: left; margin-left: 0px;">
       <button class="btn btn-success btn-lg btn-block" type="submit" style="font-size: 15px;">Edytuj</button>

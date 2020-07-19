@@ -97,12 +97,13 @@ class Profile extends Authenticated
       if($incomeId = $_POST['idIncome'])
       {
         Settings::removeIncome($incomeId);
+        Settings::deleteIncomesThisCategory($incomeId);
         Flash::addMessage('Usunięto kategorię');
         $this->redirect('/profile/showIncomes');
       }
       else
         {
-          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          Flash::addMessage('Próba usunięcia kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showIncomes');
         }
     }
@@ -116,13 +117,15 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showIncomes');
         }
     }
     public function editIncomeAction()
     {
-      if($incomeId = $_POST['idIncome2'])
+      $incomeId = $_POST['idIncome2'];
+      $incomeNewName = $_POST['editIncome'];
+      if($incomeNewName!= "")
       {
         $incomeNewName = $_POST['editIncome'];
         Settings::editIncome($incomeNewName, $incomeId);
@@ -131,7 +134,7 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba edycji kategorii nieudana.');
+          Flash::addMessage('Próba edycji kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showIncomes');
         }
     }
@@ -154,7 +157,7 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          Flash::addMessage('Próba usunięcia kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showPayments');
         }
     }
@@ -168,13 +171,15 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showPayments');
         }
     }
     public function editPaymentAction()
     {
-      if($paymentId = $_POST['idPayment2'])
+      $paymentId = $_POST['idPayment2'];
+      $paymentNewName = $_POST['editPayment'];
+      if($paymentNewName!= "")
       {
         $paymentNewName = $_POST['editPayment'];
         Settings::editPayment($paymentNewName, $paymentId);
@@ -183,7 +188,7 @@ class Profile extends Authenticated
       }
       else
         {
-          Flash::addMessage('Próba edycji kategorii nieudana.');
+          Flash::addMessage('Próba edycji kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showPayments');
         }
     }
@@ -200,13 +205,14 @@ class Profile extends Authenticated
     {
       if($expenseId = $_POST['idExpense'])
       {
-        Settings::removeExpense($expenseId);
+        Settings::removeCategoryExpense($expenseId);
         Flash::addMessage('Usunięto kategorię');
+        Settings::deleteExpensesThisCategory($expenseId);
         $this->redirect('/profile/showExpenses');
       }
       else
         {
-          Flash::addMessage('Próba usunięcia kategorii nieudana.');
+          Flash::addMessage('Próba usunięcia kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showExpenses');
         }
     }
@@ -214,28 +220,31 @@ class Profile extends Authenticated
     {
       if($expenseName = $_POST['newExpense'])
       {
-        Settings::addExpense($expenseName);
+        $expenseLimit = $_POST['expenseLimit'];
+        Settings::addExpense($expenseName, $expenseLimit);
         Flash::addMessage('Dodano nową kategorię');
         $this->redirect('/profile/showExpenses');
       }
       else
         {
-          Flash::addMessage('Próba dodania nowej kategorii nieudana.');
+          Flash::addMessage('Próba dodania nowej kategorii nieudana.', Flash::WARNING);
           $this->redirect('/profile/showExpenses');
         }
     }
     public function editExpenseAction()
     {
-      if($expenseId = $_POST['idExpense2'])
+      $expenseId = $_POST['idExpense2'];
+      $expenseNewName = $_POST['editExpense'];
+      $expenseLimit = $_POST['expenseLimit'];
+      if($expenseLimit == "" && $expenseNewName == "")
       {
-        $expenseNewName = $_POST['editExpense'];
-        Settings::editExpense($expenseNewName, $expenseId);
-        Flash::addMessage('Zedytowano kategorię');
+        Flash::addMessage('Próba edycji kategorii nieudana.', Flash::WARNING);
         $this->redirect('/profile/showExpenses');
       }
       else
         {
-          Flash::addMessage('Próba edycji kategorii nieudana.');
+          Settings::editExpense($expenseNewName, $expenseId, $expenseLimit);
+          Flash::addMessage('Zedytowano kategorię');
           $this->redirect('/profile/showExpenses');
         }
     }

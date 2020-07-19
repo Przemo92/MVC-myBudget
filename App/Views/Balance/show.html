@@ -104,6 +104,16 @@
 });
 
 $.ajax({
+url: "/balance/showLimits",
+method: "POST",
+data: {date1:date1, date2:date2}, //js:php
+  success:function(data)
+  {
+    $('#limits').html(data);
+  }
+});
+
+$.ajax({
 url: 'https://www.google.com/jsapi?callback',
 cache: true,
 dataType: 'script',
@@ -146,7 +156,11 @@ google.load('visualization', '1', {packages:['corechart'], 'callback' : function
 }
 });
    }
-
+   $("#row").on ('click', '.button', function(){
+     var id = $(this).val();
+     $('#idIncome').val(id);
+     $('#idExpense').val(id);
+   });
   </script>
 {% endblock %}
 
@@ -156,7 +170,7 @@ google.load('visualization', '1', {packages:['corechart'], 'callback' : function
 
 			<div class="container">
 
-				<div class="row">
+				<div class="row" id="row">
 
 					<div class="input-group offset-xl-9 col-xl-3 mt-4" >
 						<div class="dropdown">
@@ -215,24 +229,31 @@ google.load('visualization', '1', {packages:['corechart'], 'callback' : function
 					</div>
 					<!-- Modal /\-->
 
-					<div class="col-lg-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb; border-radius: 30px;
+					<div class="col-xl-6 text-center mt-3 mb-2" style="border: 2px solid #339966; background: #ebfaeb; border-radius: 30px;
           -moz-border-radius: 15px;">
 					<h2>PRZYCHODY</h2>
           <div id="showIncomes"></div>
 
 					</div>
 
-					<div class="col-lg-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6; border-radius: 30px;
+					<div class="col-xl-6 text-center mt-3  mb-2" style="border: 2px solid #ff3300;background: #ffebe6; border-radius: 30px;
           -moz-border-radius: 15px;"">
 					<h2>WYDATKI</h2>
           <div id="showExpenses"></div>
 					</div>
 
-					<div class="col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff; border-radius: 30px;
+          <div class="col-xl-6 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff; border-radius: 30px;
           -moz-border-radius: 15px;"">
-					<h2>BILANS</h2>
-					Przychody - Wydatki = Dochód
+          <h2>BILANS</h2>
+          Przychody - Wydatki = Dochód
           <div id="Sum"></div>
+          </div>
+
+					<div class="col-xl-6 text-center mt-3 mb-2" style="border: 2px solid #0066cc; background: #e6f2ff; border-radius: 30px;
+          -moz-border-radius: 15px;"">
+					<h2>Ustawione limity wydatków</h2>
+					Kategoria: Limit - Wydatki = Mini bilans
+          <div id="limits"></div>
 					</div>
 
 					<div id="donutchart" class="col-lg-12 text-center mt-3 mb-2" style="border: 2px solid #000000; border-radius: 30px;

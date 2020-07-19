@@ -3,14 +3,14 @@
 {% block title %}Profile{% endblock %}
 
 {% block body %}
-<div class="information offset-lg-5 col-lg-2 text-center mt-3 p-3 mb-2">
-  <h2 style="font-size: 25px">Ustawienia</h2>
+<div class="offset-lg-3 col-lg-6 mt-3 p-3 mb-2">
+  <h2 class="text-center" style="font-size: 25px">Ustawienia</h2>
 
   <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/edit';"><i class="icon-pencil-alt"></i>Uzytkownik</button>
 
-  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showIncomes'" ><i class="icon-pencil-alt"></i>Kategorie przychodu</button>
-  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showExpenses'"><i class="icon-pencil-alt"></i>Kategorie wydatków</button>
-  <button class="btn btn-primary btn-lg btn-block" type="button" onClick="location.href='/profile/showPayments'"><i class="icon-pencil-alt"></i>Rodzaje płatności</button>
+  <button class="btn btn-success btn-lg btn-block" type="button" onClick="location.href='/profile/showIncomes'" ><i class="icon-pencil-alt"></i>Kategorie przychodu</button>
+  <button class="btn btn-success btn-lg btn-block" type="button" onClick="location.href='/profile/showExpenses'"><i class="icon-pencil-alt"></i>Kategorie wydatków</button>
+  <button class="btn btn-info btn-lg btn-block" type="button" onClick="location.href='/profile/showPayments'"><i class="icon-pencil-alt"></i>Rodzaje płatności</button>
 
 </div>
 {% endblock %}

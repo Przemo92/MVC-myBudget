@@ -42,10 +42,18 @@ class BalanceModel extends \Core\Model
         foreach ($fetchData2 as $row2)
         $name = $row2["name"];
 
-				echo "<div>$name</div><div>data: ".$row["date_of_income"]." - kwota: ".$row["amount"]." - komentarz: ".$row["income_comment"]."</div>";
+				echo '<div>'.$name.'</div><div>data: '.$row["date_of_income"].' - kwota: '.$row["amount"].' - komentarz: '.$row["income_comment"].'
+        <div style="float: right">
+          <button type="button" value="'.$row["id"].'" data-toggle="modal" data-target="#deleteModal" class="button btn btn-sm btn-danger py-0" style="font-size: 0.7em; margin-right: 5px;"><i class="icon-trash"></i></button>
+        </div>
+        </div>';
 			}
       else {
-        echo "<div>data: ".$row["date_of_income"]." - kwota: ".$row["amount"]." - komentarz: ".$row["income_comment"]."</div>";
+        echo '<div>data: '.$row["date_of_income"].' - kwota: '.$row["amount"].' - komentarz: '.$row["income_comment"].'
+        <div style="float: right">
+          <button type="button" value="'.$row["id"].'" data-toggle="modal" data-target="#deleteModal" class="button btn btn-sm btn-danger py-0" style="font-size: 0.7em; margin-right: 5px;"><i class="icon-trash"></i></button>
+        </div>
+        </div>';
       }
    }
  }
@@ -79,10 +87,18 @@ class BalanceModel extends \Core\Model
        foreach ($fetchData2 as $row2)
        $name = $row2["name"];
 
-       echo "<div>$name</div><div>data: ".$row["date_of_expense"]." - kwota: ".$row["amount"]." - komentarz: ".$row["expense_comment"]."</div>";
+       echo '<div>'.$name.'</div><div>data: '.$row["date_of_expense"].' - kwota: '.$row["amount"].' - komentarz: '.$row["expense_comment"].'
+       <div style="float: right">
+         <button type="button" value="'.$row["id"].'" data-toggle="modal" data-target="#deleteModal2" class="button btn btn-sm btn-danger py-0" style="font-size: 0.7em; margin-right: 5px;"><i class="icon-trash"></i></button>
+       </div>
+       </div>';
      }
      else {
-       echo "<div>data: ".$row["date_of_expense"]." - kwota: ".$row["amount"]." - komentarz: ".$row["expense_comment"]."</div>";
+       echo '<div>data: '.$row["date_of_expense"].' - kwota: '.$row["amount"].' - komentarz: '.$row["expense_comment"].'
+       <div style="float: right">
+           <button type="button" value="'.$row["id"].'" data-toggle="modal" data-target="#deleteModal2" class="button btn btn-sm btn-danger py-0" style="font-size: 0.7em; margin-right: 5px;"><i class="icon-trash"></i></button>
+       </div>
+       </div>';
      }
   }
  }
@@ -183,7 +199,7 @@ static public function getIESum($date1, $date2)
   echo $incomeSum." - ".$expenseSum." = ".$balance;
   if($balance < 0)
   {
-    echo "<div> Twój bilans finansowy jest ujemny, uważaj, popadasz w długi!</div>";
+    echo '<div style="color: red;"> Twój bilans finansowy jest ujemny, uważaj, popadasz w długi!</div>';
   }
   else {
     echo "<div> Gratulacje! Twój bilans finansowy jest dodatni! Zaoszczędziłeś $balance.</div>";
@@ -197,4 +213,65 @@ static public function getIESum($date1, $date2)
    $stmt->execute();
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
  }
+ public static function removeIncome($incomeId)
+{
+  $user = Auth::getUser();
+
+  $sql = "DELETE FROM incomes WHERE id= :id";
+
+  $db = static::getDB();
+  $stmt = $db->prepare($sql);
+
+  $stmt->bindValue(':id', $incomeId, PDO::PARAM_INT);
+  $stmt->execute();
+}
+public static function removeExpense($expenseId)
+{
+ $user = Auth::getUser();
+
+ $sql = "DELETE FROM expenses WHERE id= :id";
+
+ $db = static::getDB();
+ $stmt = $db->prepare($sql);
+
+ $stmt->bindValue(':id', $expenseId, PDO::PARAM_INT);
+ $stmt->execute();
+}
+public static function showLimit($date1, $date2)
+{
+ $user = Auth::getUser();
+ $sql = "SELECT *
+         FROM expenses_category_assigned_to_users
+         WHERE user_id = '$user->id'";
+
+   $fetchData = static::getDataSelect($sql);
+   foreach ($fetchData as $row)
+   {
+     $miniBalance = 0;
+     $expenseSum = 0;
+
+     if($limit = $row['expenseLimit'])
+     {
+       $catName = $row['name'];
+       $catId = $row['id'];
+       $sql2 = "SELECT *
+               FROM expenses
+               WHERE user_id = '$user->id'
+               AND expense_category_assigned_to_user_id = '$catId'
+               AND date_of_expense LIKE '$date1%'";
+
+         $fetchData = static::getDataSelect($sql2);
+         foreach ($fetchData as $row2)
+         {
+           $expenseSum += $row2['amount'];
+         }
+         $miniBalance = $limit - $expenseSum;
+         if($miniBalance >= 0)
+         echo '<div style="color: green;">'.$catName.': '.$limit.' - '.$expenseSum.' = '.$miniBalance.'</div>';
+         else {
+           echo '<div style="color: red;">'.$catName.': '.$limit.' - '.$expenseSum.' = '.$miniBalance.'</div>';
+         }
+     }
+   }
+}
 }
