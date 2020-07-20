@@ -109,5 +109,43 @@ class Expense extends \Core\Model
       $this->errors[] = 'Proszę wybrać rodzaj płatności.';
     }
   }
+  public static function getLimit($expenseId, $date1)
+  {
+    $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE id='$expenseId'";
 
+  $fetchData = static::getDataSelect($sql);
+  foreach ($fetchData as $row)
+  {
+    if($row["expenseLimit"] != NULL)
+    {
+      $expenseSum =0;
+      $sql2 = " SELECT * FROM expenses
+                WHERE expense_category_assigned_to_user_id='$expenseId'
+                AND date_of_expense LIKE '$date1%'";
+      $fetchData = static::getDataSelect($sql2);
+      foreach ($fetchData as $row2)
+      {
+        $expenseSum += $row2["amount"];
+      }
+      $miniBilans = $row["expenseLimit"] - $expenseSum;
+      echo 'Limit kategorii z aktualnego miesiąca
+      <div>Limit - Wydatki = Mini bilans</div>';  ;
+      if($miniBilans < 0)
+      {
+        echo '<div style="color: red;">'.$row["expenseLimit"].' - '.$expenseSum.' = '.$miniBilans.'</div>
+        <div style="color: red;">Przekroczyłeś swój limit</div>';
+      }
+      else {
+        echo '<div style="color: green;">'.$row["expenseLimit"].' - '.$expenseSum.' = '.$miniBilans.'</div>';
+      }
+    }
+  }
+  }
+  static public function getDataSelect($sql)
+  {
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

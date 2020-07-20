@@ -54,6 +54,26 @@
      },
    });
 
+   $("#expenseCategory").change(function(){
+     var expenseId = $(this).val();
+     var today = new Date();
+     var year = today.getFullYear();
+     var month = today.getMonth()+1;
+       if(month<10)
+       {
+         month="0"+month;
+       }
+       var date1 = year+"-"+month;
+     $.ajax({
+     url: "/AddExpense/showLimit",
+     method: "POST",
+     data: {expenseId:expenseId, date1:date1}, //js:php
+       success:function(data)
+       {
+         $('#showlimit').html(data);
+       }
+   });
+});
   });
   $(document).ready(function(){
   $("#paymentMethod").select2({
@@ -117,7 +137,7 @@
 									</select>
 							</div>
               <div id="expenseCategory_validate"></div>
-
+              <div id="showlimit"></div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><i class="icon-pencil-alt"></i></span>

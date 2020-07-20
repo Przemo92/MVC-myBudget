@@ -40,13 +40,14 @@ class BalanceModel extends \Core\Model
         $fetchData2 = static::getDataSelect($sql2);
 
         foreach ($fetchData2 as $row2)
-        $name = $row2["name"];
+        {
 
-				echo '<div>'.$name.'</div><div>data: '.$row["date_of_income"].' - kwota: '.$row["amount"].' - komentarz: '.$row["income_comment"].'
+				echo '<div>'.$row2["name"].'</div><div>data: '.$row["date_of_income"].' - kwota: '.$row["amount"].' - komentarz: '.$row["income_comment"].'
         <div style="float: right">
           <button type="button" value="'.$row["id"].'" data-toggle="modal" data-target="#deleteModal" class="button btn btn-sm btn-danger py-0" style="font-size: 0.7em; margin-right: 5px;"><i class="icon-trash"></i></button>
         </div>
         </div>';
+        }
 			}
       else {
         echo '<div>data: '.$row["date_of_income"].' - kwota: '.$row["amount"].' - komentarz: '.$row["income_comment"].'

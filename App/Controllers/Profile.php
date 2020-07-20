@@ -96,8 +96,10 @@ class Profile extends Authenticated
     {
       if($incomeId = $_POST['idIncome'])
       {
-        Settings::removeIncome($incomeId);
+        $idInne = Settings::findInneIncome();
+        Settings::assignIncomesToInneCategory($incomeId, $idInne);
         Settings::deleteIncomesThisCategory($incomeId);
+        Settings::removeIncome($incomeId);
         Flash::addMessage('Usunięto kategorię');
         $this->redirect('/profile/showIncomes');
       }
@@ -208,9 +210,11 @@ class Profile extends Authenticated
     {
       if($expenseId = $_POST['idExpense'])
       {
+        $idInne = Settings::findInneExpense();
+        Settings::assignExpensesToInneCategory($expenseId, $idInne);
+        Settings::deleteExpensesThisCategory($expenseId);
         Settings::removeCategoryExpense($expenseId);
         Flash::addMessage('Usunięto kategorię');
-        Settings::deleteExpensesThisCategory($expenseId);
         $this->redirect('/profile/showExpenses');
       }
       else

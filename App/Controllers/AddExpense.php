@@ -57,6 +57,12 @@ class AddExpense extends Authenticated
         $searchTerm = $_POST['searchTerm'] ?? '';
         Expense::getDataPayment($searchTerm);
     }
+    public function showLimitAction()
+    {
+        $expenseId = $_POST['expenseId'];
+        $date1 = $_POST['date1'];
+        Expense::getLimit($expenseId, $date1);
+    }
     /**
      * Add a new item
      *

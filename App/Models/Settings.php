@@ -53,6 +53,27 @@ class Settings extends \Core\Model
     $stmt->bindValue(':incomeId', $incomeId, PDO::PARAM_INT);
     $stmt->execute();
   }
+  public static function assignIncomesToInneCategory($incomeId, $idInne)
+  {
+
+   $sql = "SELECT * FROM incomes WHERE income_category_assigned_to_user_id = $incomeId";
+
+    $fetchData = static::getDataSelect($sql);
+    foreach ($fetchData as $row)
+    {
+      $sql2 = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) VALUES (:id, :income_category_assigned_to_user_id, :amount, :date_of_income, :income_comment)';
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql2);
+
+      $stmt->bindValue(':id', $row["user_id"], PDO::PARAM_INT);
+      $stmt->bindValue(':income_category_assigned_to_user_id', $idInne, PDO::PARAM_INT);
+      $stmt->bindValue(':amount', $row["amount"], PDO::PARAM_INT);
+      $stmt->bindValue(':date_of_income', $row["date_of_income"], PDO::PARAM_STR);
+      $stmt->bindValue(':income_comment', $row["income_comment"], PDO::PARAM_STR);
+      $stmt->execute();
+    }
+  }
   public static function addIncome($newIncome)
  {
    $user = Auth::getUser();
@@ -264,6 +285,28 @@ public static function deleteExpensesThisCategory($expenseId)
   $stmt->bindValue(':expenseId', $expenseId, PDO::PARAM_INT);
   $stmt->execute();
 }
+public static function assignExpensesToInneCategory($expenseId, $idInne)
+{
+
+ $sql = "SELECT * FROM expenses WHERE expense_category_assigned_to_user_id = $expenseId";
+
+  $fetchData = static::getDataSelect($sql);
+  foreach ($fetchData as $row)
+  {
+    $sql2 = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:id, :expense_category_assigned_to_user_id, :payment_method_assigned_to_user_id, :amount, :date_of_expense, :expense_comment)';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql2);
+
+    $stmt->bindValue(':id', $row["user_id"], PDO::PARAM_INT);
+    $stmt->bindValue(':expense_category_assigned_to_user_id', $idInne, PDO::PARAM_INT);
+    $stmt->bindValue(':payment_method_assigned_to_user_id', $row["payment_method_assigned_to_user_id"], PDO::PARAM_INT);
+    $stmt->bindValue(':amount', $row["amount"], PDO::PARAM_INT);
+    $stmt->bindValue(':date_of_expense', $row["date_of_expense"], PDO::PARAM_STR);
+    $stmt->bindValue(':expense_comment', $row["expense_comment"], PDO::PARAM_STR);
+    $stmt->execute();
+  }
+}
 public static function addExpense($newExpense, $expenseLimit)
 {
 $user = Auth::getUser();
@@ -306,6 +349,34 @@ foreach ($fetchData as $row)
  }
 }
  return true;
+}
+static public function findInneExpense()
+{
+  $user = Auth::getUser();
+
+  $sql = "SELECT * FROM expenses_category_assigned_to_users
+          WHERE user_id='$user->id'
+          AND name = 'Inne'";
+
+ $fetchData = static::getDataSelect($sql);
+ foreach ($fetchData as $row)
+ {
+   return $row["id"];
+ }
+}
+static public function findInneIncome()
+{
+  $user = Auth::getUser();
+
+  $sql = "SELECT * FROM incomes_category_assigned_to_users
+          WHERE user_id='$user->id'
+          AND name = 'Inne'";
+
+ $fetchData = static::getDataSelect($sql);
+ foreach ($fetchData as $row)
+ {
+   return $row["id"];
+ }
 }
    static public function getDataSelect($sql)
    {
