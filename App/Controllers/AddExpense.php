@@ -61,7 +61,8 @@ class AddExpense extends Authenticated
     {
         $expenseId = $_POST['expenseId'];
         $date1 = $_POST['date1'];
-        Expense::getLimit($expenseId, $date1);
+        $money = $_POST['money'];
+        Expense::getLimit($expenseId, $date1, $money);
     }
     /**
      * Add a new item

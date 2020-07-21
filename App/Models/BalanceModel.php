@@ -197,13 +197,13 @@ static public function getIESum($date1, $date2)
     $incomeSum += $row3['amount'];
   }
   $balance = $incomeSum - $expenseSum;
-  echo $incomeSum." - ".$expenseSum." = ".$balance;
+  echo number_format($incomeSum, 2,',','').' - '.number_format($expenseSum, 2,',','').' = '.number_format($balance, 2,',','');
   if($balance < 0)
   {
     echo '<div style="color: red;"> Twój bilans finansowy jest ujemny, uważaj, popadasz w długi!</div>';
   }
   else {
-    echo "<div> Gratulacje! Twój bilans finansowy jest dodatni! Zaoszczędziłeś $balance.</div>";
+    echo '<div> Gratulacje! Twój bilans finansowy jest dodatni! Zaoszczędziłeś '.number_format($balance, 2,',','').'</div>';
   }
 
 }
@@ -268,9 +268,9 @@ public static function showLimit($date1, $date2)
          }
          $miniBalance = $limit - $expenseSum;
          if($miniBalance >= 0)
-         echo '<div style="color: green;">'.$catName.': '.$limit.' - '.$expenseSum.' = '.$miniBalance.'</div>';
+         echo '<div style="color: green;">'.$catName.': '.number_format($limit, 2,',','').' - '.number_format($expenseSum, 2,',','').' = '.number_format($miniBalance, 2,',','').'</div>';
          else {
-           echo '<div style="color: red;">'.$catName.': '.$limit.' - '.$expenseSum.' = '.$miniBalance.'</div>';
+           echo '<div style="color: red;">'.$catName.': '.number_format($limit, 2,',','').' - '.number_format($expenseSum, 2,',','').' = '.number_format($miniBalance, 2,',','').'</div>';
          }
      }
    }

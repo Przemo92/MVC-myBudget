@@ -82,7 +82,7 @@ class Expense extends \Core\Model
         $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
         $stmt->bindValue(':expense_category_assigned_to_user_id', $this->expenseCategory, PDO::PARAM_INT);
         $stmt->bindValue(':payment_method_assigned_to_user_id', $this->paymentMethod, PDO::PARAM_INT);
-        $stmt->bindValue(':amount', $this->expenseMoney, PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $this->expenseMoney, PDO::PARAM_STR);
         $stmt->bindValue(':date_of_expense', $this->datePicker, PDO::PARAM_STR);
         $stmt->bindValue(':expense_comment', $this->expenseComment, PDO::PARAM_STR);
 
@@ -109,7 +109,7 @@ class Expense extends \Core\Model
       $this->errors[] = 'Proszę wybrać rodzaj płatności.';
     }
   }
-  public static function getLimit($expenseId, $date1)
+  public static function getLimit($expenseId, $date1, $money)
   {
     $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE id='$expenseId'";
 
@@ -127,16 +127,21 @@ class Expense extends \Core\Model
       {
         $expenseSum += $row2["amount"];
       }
+      if ($money == "")
+      {
+        $money = 0;
+      }
+      $expenseSum = $expenseSum + $money;
       $miniBilans = $row["expenseLimit"] - $expenseSum;
       echo 'Limit kategorii z aktualnego miesiąca
       <div>Limit - Wydatki = Mini bilans</div>';  ;
       if($miniBilans < 0)
       {
-        echo '<div style="color: red;">'.$row["expenseLimit"].' - '.$expenseSum.' = '.$miniBilans.'</div>
+        echo '<div style="color: red;">'.number_format($row["expenseLimit"], 2,',','').' - '.number_format($expenseSum, 2,',','').' = '.number_format($miniBilans, 2,',','').'</div>
         <div style="color: red;">Przekroczyłeś swój limit</div>';
       }
       else {
-        echo '<div style="color: green;">'.$row["expenseLimit"].' - '.$expenseSum.' = '.$miniBilans.'</div>';
+        echo '<div style="color: green;">'.number_format($row["expenseLimit"], 2,',','').' - '.number_format($expenseSum, 2,',','').' = '.number_format($miniBilans, 2,',','').'</div>';
       }
     }
   }

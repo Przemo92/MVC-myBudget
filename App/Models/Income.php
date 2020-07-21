@@ -14,7 +14,7 @@ use App\Auth;
 class Income extends \Core\Model
 {
  public $errors = [];
- 
+
  public function __construct($data = [])
  {
    foreach ($data as $key => $value) {
@@ -62,7 +62,7 @@ class Income extends \Core\Model
 
          $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
          $stmt->bindValue(':income', $this->incomeCategory, PDO::PARAM_INT);
-         $stmt->bindValue(':money', $this->money, PDO::PARAM_INT);
+         $stmt->bindValue(':money', $this->money, PDO::PARAM_STR);
          $stmt->bindValue(':date', $this->datePicker, PDO::PARAM_STR);
          $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
 
