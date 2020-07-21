@@ -59,10 +59,15 @@ class AddExpense extends Authenticated
     }
     public function showLimitAction()
     {
+      $expenseId = $_POST['expenseId'];
+      if($expenseId != 0)
+      {
         $expenseId = $_POST['expenseId'];
         $date1 = $_POST['date1'];
         $money = $_POST['money'];
         Expense::getLimit($expenseId, $date1, $money);
+      }
+
     }
     /**
      * Add a new item
